@@ -21,9 +21,7 @@ def do_full_game(game_list):
 
 
 def player_move(piece, move):
-    #at end
-    #if take move take_move()
-    #if castle do castle1()
+    
     pass
 
 
