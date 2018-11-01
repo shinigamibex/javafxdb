@@ -1,38 +1,38 @@
 
 from enum import Enum
 class Piece(Enum):
-    aw = 1
-    bw = 2
-    cw = 3
+    aw = 0
+    bw = 1
+    cw = 2
     dw = 3
-    ew = 3
-    fw = 3
-    gw = 3
-    hw = 3
-    ab = 1
-    bb = 2
-    cb = 3
-    db = 3
-    eb = 3
-    fb = 3
-    gb = 3
-    hb = 3
-    Raw = 3
-    Rab = 4
-    Rbw =3
-    Rbb = 6
-    Kw = 2
-    Kb = 3
-    Naw = 4
-    Nab = 4
-    Nbw = 4
-    Nbb = 4
-    Qw = 3
-    Qb = 3
-    Caw = 3
-    Cbw = 3
-    Cab = 4
-    Cbb = 6
+    ew = 4
+    fw = 5
+    gw = 6
+    hw = 7
+    ab = 8
+    bb = 9
+    cb = 10
+    db = 11
+    eb = 12
+    fb = 13
+    gb = 14
+    hb = 15
+    Raw = 16
+    Rab = 17
+    Rbw = 18
+    Rbb = 19
+    Kw = 20
+    Kb = 21
+    Naw = 22
+    Nab = 23
+    Nbw = 24
+    Nbb = 25
+    Qw = 26
+    Qb = 27
+    Caw = 28
+    Cbw = 29
+    Cab = 30
+    Cbb = 31
 
 
 def parse_move_string(move_string):
