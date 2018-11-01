@@ -8,6 +8,22 @@ all_chess_games = []
 
 chess_game = []
 
+#needs to be updated
+default_starting_board = {Piece.P1w:(2,1),
+                          Piece.P2w:(2,2),
+                          Piece.P3w:(2,3),
+                          Piece.P4w:(2,4),
+                          Piece.P5w:(2,5),
+                          Piece.P6w:(2,6),
+                          Piece.P7w:(2,7),
+                          Piece.P8w:(2,8),
+                          Piece.P2w:(2,2),
+                          Piece.P2w:(2,2),
+                          Piece.P2w:(2,2),
+                          Piece.P2w:(2,2),
+                          Piece.P2w:(2,2),
+                          Piece.P2w:(2,2),
+                          Piece.P2w:(2,2)}
 
 current_board = {}
 #True is white
@@ -49,6 +65,8 @@ def get_s_piece_from_straights(gen_piece,location):
         if(map_specific_to_generic_piece(check_for_piece_in_row_and_col(location[0],i)) ==  gen_piece):
             if(get_piece_color(p_at_loc) == player):
                 return check_for_piece_in_row_and_col(i,location[1])
+
+
 
 def get_s_piece_from_diags(gen_piece,location):
     pass
