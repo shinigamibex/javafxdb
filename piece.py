@@ -57,23 +57,16 @@ class Move(object):
         self.start = start
         self.piece = piece
 
-    # def __str__(self):
-    #     return "{} {} {} {}".format(self.type, self.dest, self.start, self.piece)
+    def __str__(self):
+        return "{} {} {} {}".format(self.type, self.dest, self.start, self.piece)
 
 
 def parse_move_string(move_string):
-    length = len(move_string)
-    if length == 2:
-        return Move(MoveType.MovePiece, (int(move_string[1]), ord(move_string[0]) - ord('a')), None, GenericPiece.Pawn)
-
-    piece = None
-
+    piece = GenericPiece.Pawn
     column = None
     row = None
-
     dest = None
     start = None
-
     moveType = MoveType.MovePiece
 
     # this is a for non pawn moves
@@ -96,12 +89,12 @@ def parse_move_string(move_string):
             c = move_string[0]
             move_string = move_string[1:]
             if (not c == 'x') and c.isalpha():
-                column = c
+                column = ord(c) - ord('a') + 1
             elif (not c == 'x') and c.isdigit():
                 row = int(c)
             elif c == 'x':
                 moveType = MoveType.TakePiece
-    dest = (int(move_string[1]), ord(move_string[0]) - ord('a'))
+    dest = (int(move_string[1]), ord(move_string[0]) - ord('a') + 1)
     start = (column, row)
     return Move(moveType, dest, start, piece)
 
