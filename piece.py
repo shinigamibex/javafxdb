@@ -34,6 +34,6 @@ class Piece(Enum):
     Cab = 4
     Cbb = 6
 
-    
+
 def parse_move_string(move_string):
     pass
