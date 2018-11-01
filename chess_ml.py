@@ -1,6 +1,6 @@
 import os
 from piece import *
-
+from board import *
 
 
 all_chess_games = []
@@ -8,22 +8,21 @@ all_chess_games = []
 
 chess_game = []
 
-default_starting_board = {}
+
 current_board = {}
 player = True
 
 def do_full_game(game_list):
+    current_board = default_starting_board.copy()
     #call player_move_multiple times
     for move in game_list:
-        piece,move = parse_move_string(move)
+        move = parse_move_string(move)
         player_move(piece,move)
         player = !player
 
 
-def player_move(piece, move):
-    #at end
-    #if take move take_move()
-    #if castle do castle1()
+def player_move(move):
+    
     pass
 
 
