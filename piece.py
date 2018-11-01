@@ -57,11 +57,14 @@ class Move(object):
         self.start = start
         self.piece = piece
 
+    # def __str__(self):
+    #     return "{} {} {} {}".format(self.type, self.dest, self.start, self.piece)
+
 
 def parse_move_string(move_string):
     length = len(move_string)
     if length == 2:
-        return Move(MoveType.MovePiece, (move_string[0], int(move_string[1])), None, Piece.Pawn)
+        return Move(MoveType.MovePiece, (int(move_string[1]), ord(move_string[0]) - ord('a')), None, GenericPiece.Pawn)
 
     piece = None
 
@@ -88,11 +91,19 @@ def parse_move_string(move_string):
         elif p == 'Q':
             piece = GenericPiece.Queen
 
-    if move_string[0].islower():
-        c = move_string[0]
-        move_string = move_string[1:]
+    while len(move_string) > 2:
+        if move_string[0].islower() or move_string[0].isdigit():
+            c = move_string[0]
+            move_string = move_string[1:]
+            if (not c == 'x') and c.isalpha():
+                column = c
+            elif (not c == 'x') and c.isdigit():
+                row = int(c)
+            elif c == 'x':
+                moveType = MoveType.TakePiece
+    dest = (int(move_string[1]), ord(move_string[0]) - ord('a'))
+    start = (column, row)
+    return Move(moveType, dest, start, piece)
 
-        if (not c == 'x') and c.isalpha():
-            column = c
-        elif (not c == 'x') and c.isdigit():
-            row = int(c)
+if __name__ == '__main__':
+    print(parse_move_string('Rh1xe3'))
