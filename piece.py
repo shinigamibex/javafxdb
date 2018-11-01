@@ -34,6 +34,20 @@ class Piece(Enum):
     Cab = 30
     Cbb = 31
 
+class MoveType(Enum):
+    MovePiece = 0
+    TakePiece = 1
+    Castle1 = 2
+    Castle2 = 3
+    EnPassant = 4
 
-def parse_move_string(move_string):
+class Move(object):
+    def __init__(self, ty, loc, piece):
+        super().__init__()
+        self.type = ty
+        self.loc = loc
+        self.piece = piece
+
+
+def parse_move_string(move_string, player):
     pass
