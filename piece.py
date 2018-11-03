@@ -18,7 +18,7 @@ class Piece(Enum):
     P7b = 14
     P8b = 15
     R1w = 16
-    R2b = 17
+    R1b = 17
     R2w = 18
     R2b = 19
     Kw = 20
@@ -29,16 +29,16 @@ class Piece(Enum):
     N2b = 25
     Qw = 26
     Qb = 27
-    C1w = 28
-    C2w = 29
-    C1b = 30
-    C2b = 31
+    B1w = 28
+    B2w = 29
+    B1b = 30
+    B2b = 31
 
 class GenericPiece(Enum):
     Pawn = 0
     Knight = 1
-    Castle = 2
-    Rook = 3
+    Rook = 2
+    Bishop = 3
     King = 4
     Queen = 5
 
@@ -63,18 +63,24 @@ class Move(object):
         return "{} {} {} {}".format(self.type, self.dest, self.start, self.piece)
 
 def get_piece(c):
-    return {'R': GenericPiece.Rook,
-            'C': GenericPiece.Castle,
+    return {'B': GenericPiece.Bishop,
+            'R': GenericPiece.Rook,
+            'N': GenericPiece.Knight,
             'K': GenericPiece.King,
             'Q': GenericPiece.Queen}[c]
 
 def parse_move_string(move_string):
-    if move_string == '0-0':
+
+    move_string = move_string.replace('+', '') # removes check symbols
+    move_string = move_string.replace('#', '') # removes checkmate symbols
+
+    # checks for castle type 1
+    if move_string == 'O-O':
         return Move(MoveType.Castle1, None, None, None)
-    elif move_string == '0-0-0':
+    # checks for castle type 2
+    elif move_string == 'O-O-O':
         return Move(MoveType.Castle2, None, None, None)
 
-    move_string = move_string.replace('+', '')
     index = move_string.find('(ep)')
     hasEn = False
     promo = None
@@ -118,6 +124,3 @@ def parse_move_string(move_string):
     if not promo is None:
         return Move(MoveType.PawnPromotion, dest, start, piece, promo)
     return Move(moveType, dest, start, piece)
-
-if __name__ == '__main__':
-    print(parse_move_string('Rh1xe3'))

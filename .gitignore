@@ -99,3 +99,9 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# this is Andrews main file for testing
+abmain.py
+
+# ignores mac thing
+.DS_Store
