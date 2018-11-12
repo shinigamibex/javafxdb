@@ -56,7 +56,8 @@ def get_piece_from_generic(gen_piece,dest):
         return get_s_piece_from_diags(gen_piece,dest)
     if(gen_piece == GenericPiece.Knight):
         return get_s_piece_from_Ls(gen_piece,dest)
-    if(gen_piece == GenericPiece.Queen):
+    if(gen_piece == GenericPiece.Queen or gen_piece == GenericPiece.King):
+        return get_single_piece(gen_piece)
 
 
 
@@ -215,9 +216,9 @@ def check_for_piece_in_row_and_col(row,col):
             if(get_piece_color(piece) == player):
                 return piece
 
-def get_single_piece(GenericPiece):
+def get_single_piece(gen_piece):
     for piece,loc in enumerate(current_board):
-        if(get_piece_color(piece) == player):
+        if(get_piece_color(piece) == player and piece == gen_piece):
             return piece
 
 def map_specific_to_generic_piece(specific_piece):
