@@ -50,6 +50,10 @@ class MoveType(Enum):
     EnPassant = 4
     PawnPromotion = 5
 
+class Player(Enum):
+    White = 0
+    Black = 1
+
 class Move(object):
     def __init__(self, ty, dest, start, piece, promo = None):
         super().__init__()
@@ -61,6 +65,34 @@ class Move(object):
 
     def __str__(self):
         return "{} {} {} {}".format(self.type, self.dest, self.start, self.piece)
+
+class Game(object):
+    uid = 0
+    def __init__(self, winner, moves):
+        super().__init__()
+        self.winner = winner
+        self.moves = moves
+        self.id = Game.uid
+        Game.uid += 1
+    
+    def __str__(self):
+        return "Game({}, {}, {})".format(self.id, self.winner, len(self.moves))
+
+
+def parse_games(df):
+    games = []
+    for _, d in df.iterrows():
+        winner = d['winner']
+        move = d['moves']
+        moves = move.split()
+        m = [parse_move_string(_moves) for _moves in moves]
+        if winner == 'white':
+            winner = Player.White
+        else:
+            winner = Player.Black
+        games.append(Game(winner, m))
+    return games
+        
 
 def get_piece(c):
     return {'B': GenericPiece.Bishop,
