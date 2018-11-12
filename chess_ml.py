@@ -41,13 +41,22 @@ def do_full_game(game_list):
 
 def player_move(move):
     move_obj = parse_move_string(move)
+    #rank or file
     if (move_obj.start[0] or move_obj.start[1]):
-        get_piece_from_generic_location(move_obj.type,move_obj.start)
+        piece = get_piece_from_generic_location(move_obj.piece,move_obj.start)
     else:
-        get_piece_from_generic(move.type)
+        piece =get_piece_from_generic(move_obj.piece,move_obj.dest)
 
-def get_piece_from_generic(gen_piece):
-    pass
+def get_piece_from_generic(gen_piece,dest):
+    if(gen_piece == GenericPiece.Rook):
+        return get_s_piece_from_straights(gen_piece,dest)
+    if(gen_piece == GenericPiece.Pawn):
+        return get_pawn_piece_from_dest(dest)
+    if(gen_piece == GenericPiece.Bishop):
+        return get_s_piece_from_diags(gen_piece,dest)
+    if(gen_piece == GenericPiece.Knight):
+        return get_s_piece_from_Ls(gen_piece,dest)
+
 
 def get_piece_color(piece):
     if(piece[-1] == 'w'):
@@ -56,23 +65,75 @@ def get_piece_color(piece):
         return False
 
 def get_s_piece_from_straights(gen_piece,location):
+    #do columns first
     for i in range(1,9):
         p_at_loc = map_specific_to_generic_piece(check_for_piece_in_row_and_col(i,location[1]))
         if(p_at_loc ==  gen_piece):
             if(get_piece_color(p_at_loc) == player):
                 return check_for_piece_in_row_and_col(i,location[1])
+    #then do rows
     for i in range(1,9):
         if(map_specific_to_generic_piece(check_for_piece_in_row_and_col(location[0],i)) ==  gen_piece):
             if(get_piece_color(p_at_loc) == player):
                 return check_for_piece_in_row_and_col(i,location[1])
 
-
-
 def get_s_piece_from_diags(gen_piece,location):
-    pass
+    #need 4 diagonals from the locatin:
+    r=location[0]
+    c=location[1]
+    while (r<=8 and c <=8 and r >=1 and c >= 1):
+        r+=1
+        c+=1
+        if(map_specific_to_generic_piece(check_for_piece_in_row_and_col(r,c)) ==  gen_piece):
+            if(get_piece_color(p_at_loc) == player):
+                return check_for_piece_in_row_and_col(r,c)
+    r=location[0]
+    c=location[1]
+    while (r<=8 and c <=8 and r >=1 and c >= 1):
+        r-=1
+        c+=1
+        if(map_specific_to_generic_piece(check_for_piece_in_row_and_col(r,c)) ==  gen_piece):
+            if(get_piece_color(p_at_loc) == player):
+                return check_for_piece_in_row_and_col(r,c)
+    r=location[0]
+    c=location[1]
+    while (r<=8 and c <=8 and r >=1 and c >= 1):
+        r+=1
+        c-=1
+        if(map_specific_to_generic_piece(check_for_piece_in_row_and_col(r,c)) ==  gen_piece):
+            if(get_piece_color(p_at_loc) == player):
+                return check_for_piece_in_row_and_col(r,c)
+    r=location[0]
+    c=location[1]
+    while (r<=8 and c <=8 and r >=1 and c >= 1):
+        r-=1
+        c-=1
+        if(map_specific_to_generic_piece(check_for_piece_in_row_and_col(r,c)) ==  gen_piece):
+            if(get_piece_color(p_at_loc) == player):
+                return check_for_piece_in_row_and_col(r,c)
+
+
+#pawn can move up one or two from destination
+def get_pawn_piece_from_dest(location):
+    if player:
+        p1 = check_for_piece_in_row_and_col([dest[0]-1,dest[1]])
+        p2 = check_for_piece_in_row_and_col([dest[0]-2,dest[1]])
+        if p1:
+            return p1
+        else:
+            return p2
+    else:
+        p1 = check_for_piece_in_row_and_col([dest[0]+1,dest[1]])
+        p2 = check_for_piece_in_row_and_col([dest[0]+2,dest[1]])
+        if p1:
+            return p1
+        else:
+            return p2
+
+
 
 def get_s_piece_from_Ls(gen_piece,location):
-    pass
+    checks = [(2,1),(1,2),(-1,2),(-2,1),(-2,-1),(-1,-2),(1,-2),(2,-1)]
 
 def get_s_pawn(gen_piece,location):
     pass
