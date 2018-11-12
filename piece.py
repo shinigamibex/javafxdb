@@ -74,7 +74,7 @@ class Game(object):
         self.moves = moves
         self.id = Game.uid
         Game.uid += 1
-    
+
     def __str__(self):
         return "Game({}, {}, {})".format(self.id, self.winner, len(self.moves))
 
@@ -92,7 +92,7 @@ def parse_games(df):
             winner = Player.Black
         games.append(Game(winner, m))
     return games
-        
+
 
 def get_piece(c):
     return {'B': GenericPiece.Bishop,
