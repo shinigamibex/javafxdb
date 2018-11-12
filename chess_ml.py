@@ -56,6 +56,8 @@ def get_piece_from_generic(gen_piece,dest):
         return get_s_piece_from_diags(gen_piece,dest)
     if(gen_piece == GenericPiece.Knight):
         return get_s_piece_from_Ls(gen_piece,dest)
+    if(gen_piece == GenericPiece.Queen):
+
 
 
 def get_piece_color(piece):
@@ -84,7 +86,11 @@ def get_s_piece_from_diags(gen_piece,location):
     while (r<=8 and c <=8 and r >=1 and c >= 1):
         r+=1
         c+=1
-        if(map_specific_to_generic_piece(check_for_piece_in_row_and_col(r,c)) ==  gen_piece):
+
+        p_at_loc = map_specific_to_generic_piece(check_for_piece_in_row_and_col(r,c))
+        if p_at_loc == None:
+            break
+        if(p_at_loc ==  gen_piece):
             if(get_piece_color(p_at_loc) == player):
                 return check_for_piece_in_row_and_col(r,c)
     r=location[0]
@@ -92,7 +98,10 @@ def get_s_piece_from_diags(gen_piece,location):
     while (r<=8 and c <=8 and r >=1 and c >= 1):
         r-=1
         c+=1
-        if(map_specific_to_generic_piece(check_for_piece_in_row_and_col(r,c)) ==  gen_piece):
+        if p_at_loc == None:
+            break
+        p_at_loc = map_specific_to_generic_piece(check_for_piece_in_row_and_col(r,c))
+        if(p_at_loc ==  gen_piece):
             if(get_piece_color(p_at_loc) == player):
                 return check_for_piece_in_row_and_col(r,c)
     r=location[0]
@@ -100,7 +109,10 @@ def get_s_piece_from_diags(gen_piece,location):
     while (r<=8 and c <=8 and r >=1 and c >= 1):
         r+=1
         c-=1
-        if(map_specific_to_generic_piece(check_for_piece_in_row_and_col(r,c)) ==  gen_piece):
+        if p_at_loc == None:
+            break
+        p_at_loc = map_specific_to_generic_piece(check_for_piece_in_row_and_col(r,c))
+        if(p_at_loc ==  gen_piece):
             if(get_piece_color(p_at_loc) == player):
                 return check_for_piece_in_row_and_col(r,c)
     r=location[0]
@@ -108,7 +120,10 @@ def get_s_piece_from_diags(gen_piece,location):
     while (r<=8 and c <=8 and r >=1 and c >= 1):
         r-=1
         c-=1
-        if(map_specific_to_generic_piece(check_for_piece_in_row_and_col(r,c)) ==  gen_piece):
+        if p_at_loc == None:
+            break
+        p_at_loc = map_specific_to_generic_piece(check_for_piece_in_row_and_col(r,c))
+        if(p_at_loc ==  gen_piece):
             if(get_piece_color(p_at_loc) == player):
                 return check_for_piece_in_row_and_col(r,c)
 
@@ -134,9 +149,13 @@ def get_pawn_piece_from_dest(location):
 
 def get_s_piece_from_Ls(gen_piece,location):
     checks = [(2,1),(1,2),(-1,2),(-2,1),(-2,-1),(-1,-2),(1,-2),(2,-1)]
+    for i in checks:
+        p_at_loc = map_specific_to_generic_piece(check_for_piece_in_row_and_col(location[0]+i[0],location[1]+i[1]))
+        if(p_at_loc ==  gen_piece):
+            if(get_piece_color(p_at_loc) == player):
+                return check_for_piece_in_row_and_col(location[0]+i[0],location[1]+i[1])
 
-def get_s_pawn(gen_piece,location):
-    pass
+
 
 
 def get_piece_from_generic_location(gen_piece,location):
@@ -164,6 +183,11 @@ def check_for_piece_in_row_and_col(row,col):
         if(loc == "{}{}".format(row,col)):
             if(get_piece_color(piece) == player):
                 return piece
+
+def get_single_piece(GenericPiece):
+    for piece,loc in enumerate(current_board):
+        if(get_piece_color(piece) == player):
+            return piece
 
 def map_specific_to_generic_piece(specific_piece):
     if(specific_piece[0] == 'P'):
