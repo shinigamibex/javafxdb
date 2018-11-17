@@ -23,8 +23,6 @@ class Game(object):
 def parse_games(df):
     games = []
     for _, d in df.iterrows():
-        if len(games) > 1:
-            break
         # we need the board inorder to parse the move
         board = chess.Board()
         winner = d['winner']
