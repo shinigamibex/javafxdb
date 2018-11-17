@@ -81,7 +81,7 @@ def get_board_states(game, num_moves):
         board.push(game.moves[i])
         fen = board.board_fen()
         board_states.append(parse_fen(fen))
-    return np.array(board_states)
+    return np.array(np.array(board_states))
 
 def get_board_state(game, move_index):
     board = chess.Board()
