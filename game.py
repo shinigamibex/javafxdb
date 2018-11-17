@@ -1,5 +1,6 @@
 import chess
 from enum import Enum
+import numpy as np
 
 
 class Player(Enum):
@@ -79,8 +80,8 @@ def get_board_states(game, num_moves):
     for i in range(0, num_moves):
         board.push(game.moves[i])
         fen = board.board_fen()
-        board_states.extend(parse_fen(fen))
-    return board_states
+        board_states.append(parse_fen(fen))
+    return np.array(board_states)
 
 def get_board_state(game, move_index):
     board = chess.Board()
