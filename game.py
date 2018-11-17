@@ -80,11 +80,24 @@ def get_board_states(game, num_moves):
     for i in range(0, num_moves):
         board.push(game.moves[i])
         fen = board.board_fen()
-        board_states.append(parse_fen(fen))
-    return np.array(np.array(board_states))
+        board_states.append(np.array(parse_fen(fen)))
+    return np.array(board_states)
 
 def get_board_state(game, move_index):
     board = chess.Board()
     for i in range(0, move_index):
         board.push(game.moves[i])
     return parse_fen(board.board_fen())
+
+def transform(games, num_moves, trans = None):
+    x = []
+    y = []
+    for game in games:
+        states = get_board_states(game, num_moves)
+        if not trans is None:
+            states = trans(states)
+        x.append(states)
+        y.append(game.winner.value)
+    return np.array(x), np.array(y)
+
+    
