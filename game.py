@@ -20,13 +20,17 @@ class Game(object):
     def __str__(self):
         return "Game({}, {}, {})".format(self.id, self.winner, len(self.moves))
 
-def parse_games(df):
+def parse_games(df, num_moves):
     games = []
     for _, d in df.iterrows():
         # we need the board inorder to parse the move
         board = chess.Board()
         winner = d['winner']
         moves = d['moves'].split()
+
+        if len(moves) < num_moves:
+            continue
+
         m = []
         for _moves in moves:
             move = board.parse_san(_moves)
