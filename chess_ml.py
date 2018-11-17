@@ -12,6 +12,8 @@ if __name__ == '__main__':
     states = get_board_states(game, 5)
     print(states)
 
+    print(get_board_state(game, 5))
+
 
 
 
