@@ -10,21 +10,59 @@ import os
 import chess
 from dataset import *
 from game import *
+from keras import backend as K
+# K.set_image_dim_ordering('th')
 
 if __name__ == '__main__':
+    game_len = 10
+
+
+
+    # winner = game.winner
+    # print(winner.value)
+    train_x = []
+
+
+    def transform_states(states):
+        full_board_image = []
+        for i in range(8):
+            full_board_image.append([])
+            for state in states:
+                for j in range(8):
+
+                    full_board_image[-1].append([state[(i*8)+j]])
+        return full_board_image
+
+
+
+
+    model = Sequential()
+    model.add(Conv2D(128, kernel_size=(5, 5),
+                     input_shape=(8, 8*game_len,1), padding='same',activation='relu',))
+
+    # model.add(MaxPooling2D(pool_size=(2, 2), strides=(1, 1)))
+    model.add(Conv2D(256, (5, 5), activation='relu'))
+    model.add(Conv2D(512, (4, 4), activation='relu'))
+    # model.add(Conv2D(128, (5, 5), activation='relu'))
+    # model.add(Conv2D(32, (5, 5), activation='relu'))
+
+    # model.add(MaxPooling2D(pool_size=(2, 2)))
+    model.add(Flatten())
+    model.add(Dense(10000, activation='relu'))
+    model.add(Dense(1, activation='softmax'))
+    model.compile(optimizer='rmsprop',
+              loss='binary_crossentropy',
+              metrics=['accuracy'])
+    # print(len(train_x))
+
     df = load_dataset()
-    game = parse_games(df)[0]
 
-    states = get_board_states(game, 5)
-    # print(states)
+    games = parse_games(df, game_len)
+    train_x,train_y = transform(games[0:15000], game_len,transform_states)
+    test_x,test_y = transform(games[15000:16000], game_len,transform_states)
+    print(len(games))
+    print(parse_games)
 
-    # print(get_board_state(game, 5))
 
-    full_board_image = []
-    for i in range(8):
-        for state in states:
-            for j in range(8):
-                full_board_image.append(state[(i*8)+j])
-    print(full_board_image)
-
-    
+    model.fit(train_x,train_y)
+    print(model.evaluate(test_x,test_y))
