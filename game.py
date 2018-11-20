@@ -1,4 +1,5 @@
 import chess
+import math
 from enum import Enum
 import numpy as np
 
@@ -20,6 +21,26 @@ class Game(object):
     def __str__(self):
         return "Game({}, {}, {})".format(self.id, self.winner, len(self.moves))
 
+def split_games(games, split, moves, ends_at_moves = False):
+    assert split < 1.0
+    test = []
+    train = []
+    games_ = []
+
+    for game in games:
+        if ends_at_moves:
+            if len(game.moves) == moves:
+                games_.append(game)
+        else:
+            if len(game.moves) > moves:
+                games_.append(game)
+
+    game_len = len(games_)
+    train = games_[0:math.floor(game_len*split)]
+    test = games_[math.floor(game_len*split):]
+
+    return train, test
+
 def parse_games(df, num_moves):
     games = []
     for _, d in df.iterrows():
@@ -28,7 +49,7 @@ def parse_games(df, num_moves):
         winner = d['winner']
         moves = d['moves'].split()
 
-        if len(moves) < num_moves:
+        if num_moves is not None and len(moves) != num_moves:
             continue
 
         m = []
