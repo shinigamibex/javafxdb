@@ -42,7 +42,7 @@ if __name__ == '__main__':
 
     # model.add(MaxPooling2D(pool_size=(2, 2), strides=(1, 1)))
     model.add(Conv2D(256, (5, 5), activation='relu'))
-    model.add(Conv2D(512, (4, 4), activation='relu'))
+    # model.add(Conv2D(512, (4, 4), activation='relu'))
     # model.add(Conv2D(128, (5, 5), activation='relu'))
     # model.add(Conv2D(32, (5, 5), activation='relu'))
 
@@ -57,12 +57,20 @@ if __name__ == '__main__':
 
     df = load_dataset()
 
-    games = parse_games(df, game_len)
-    train_x,train_y = transform(games[0:15000], game_len,transform_states)
-    test_x,test_y = transform(games[15000:16000], game_len,transform_states)
-    print(len(games))
-    print(parse_games)
+    split_train = []
+    split_test = []
+    for i in range(10,16):
+        games = parse_games(df, i)
+
+        split_train_s,split_test_s = split_games(games, 0.8, i, ends_at_moves = True)
+        split_train.extend(split_train_s)
+        split_test.extend(split_test_s)
+
+    train_x,train_y = transform(split_train, game_len,transform_states)
+    test_x,test_y = transform(split_test, game_len,transform_states)
+    # print(len(games))
+    # print(parse_games)
 
 
-    model.fit(train_x,train_y)
+    model.fit(train_x,train_y,shuffle=False)
     print(model.evaluate(test_x,test_y))
